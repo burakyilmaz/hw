@@ -1,0 +1,26 @@
+#include<stdio.h>
+
+void main()
+{
+	int sayi, a, b, c, d, x = 1000;
+
+	printf("Cozumlenecek sayi= ");
+	scanf_s("%d", &sayi);
+	printf("\nGirilen sayi %d\n", sayi);
+
+	a = sayi / x;     //binler basamğındaki rakamı bulur.
+	x /= 10;          //yüzler basamağındaki sayıyı bulmak için hazırlık. x in yeni değeri 100 olur.
+	sayi -= a * 1000; //binler basamağındaki rakamı atar. sayıyı 3 basamaklı yapar.
+	b = sayi / x;     //yüzler basamağındaki rakamı bulur.
+	x /= 10;          //onlar basamağındaki sayıyı bulmak için hazırlık. x in yeni değeri 10 olur.
+	sayi -= b * 100;  //yüzler basamağındaki rakamı atar. sayıyı 2 basamaklı yapar.
+	c = sayi / x;     //onlar basamağındaki rakamı bulur.
+	x /= 10;          //birler basamağındaki rakamı bulmak için hazırlık. x in yeni değeri 1 olur.
+	sayi -= c * 10;   //onlar basamağındaki rakamı atar. sayıyı tek basamaklı yani rakam yapar.
+	d = sayi;         //sayıda artık tek rakam kalmıştır. o da birler basamağındaki rakamdır.
+
+	printf("\n%d tane binlik sayi\n", a);
+	printf("%d tane yuzluk sayi\n", b);
+	printf("%d tane onluk sayi\n", c);
+	printf("%d tane birlik sayi vardir\n\n", d);
+}
