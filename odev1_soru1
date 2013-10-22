@@ -1,0 +1,114 @@
+#include<stdio.h> //printf ve scanf kullanmak icin.
+#include<conio.h> //getch() kullanmak icin.
+#include<iostream> //exit(1) kullanmak icin.
+#define SIFRE 1234 //sifreyi 1234 olarak belirledim. programın icinden degistirilemez.
+
+void main()
+{
+	int deneme,a,hesapno; //deneme:sifre kontrolü, a:menüde seçim, hesapno:para gönderirken istenecek. 
+	char isim[30],x; //isim:kullanıcı adı, x:yeni işlem menüsünde seçim.
+	float bakiye=120,ekle,cikar,gonder; //bakiye:ilk açılışta 120tl yaptım. ekle,çıkar,gonder:para işlemleri için.
+
+	printf("Kullanici Adi = "); //karakter ya da sayı olarak girilebilir.kontrol yaptıramadım ne girersek kabul eder.
+	gets_s(isim);
+	printf("Sifre = "); //sadece sayı kabul eder. 
+	scanf_s("%d", &deneme);
+
+		while (deneme != SIFRE) //varsayılan şifre 1234.while sayesinde dogru şifre girilene kadar döngü çalışır.
+		{
+			printf("\nGirdiginiz sifre yanlis, lutfen tekrar deneyin= ");
+			scanf_s("%d", &deneme);
+		}
+		
+		printf("\nSayin %s, Lutfen Yapmak Istediginiz Islemi Seciniz:",isim);
+
+	MENU: //goto komutuyla birlikte kullandım.
+		printf(
+		"\n\n---------------------\n"
+		"\tMENU"
+		"\n\t----"
+		"\n\n1 - Bakiye Sorgulama\n"
+		"2 - Para Yatirma\n"
+		"3 - Para Cekme\n"
+		"4 - Para Transferi\n"
+		"5 - Cikis\n"
+		"---------------------\n");
+		
+		a = _getch();
+		switch (a)
+		{
+		case'1':
+			printf("\nSu anda hesabinizda bulunan toplam bakiye= %5.2fTL", bakiye);
+			printf("\nBaska islem yapmak istiyor musunuz? (e - h)");
+			goto YENIISLEM; break; //YENIISLEM'i aşağıda tanımladım. e menüye h çıkışa yönlendirir.
+		case'2':
+			printf("\n\nYatirmak istediginiz tutar= ");
+			scanf_s("%f", &ekle);
+			while (ekle <= 0) //0 dan büyük bir sayı girilene kadar devam eder.
+			{
+			printf("Lutfen 0 dan buyuk bir miktar giriniz= ");
+			scanf_s("%f", &ekle);
+			}
+			bakiye += ekle;
+			printf("\nPara yatirma isleminiz basariyla tamamlanmistir.");
+			printf("\nYeni toplam bakiyeniz= %5.2fTL", bakiye);
+			printf("\nBaska islem yapmak istiyor musunuz? (e - h)");
+			goto YENIISLEM; break;
+		case'3':
+			printf("\n\nCekmek istediginiz tutar= ");
+			scanf_s("%f", &cikar);
+			while (cikar<=0) // 0 dan büyük bir sayı girilene kadar devam eder. daha sonrada bakiye kontrolüne girer.
+			{
+				printf("Lutfen 0 dan buyuk bir miktar giriniz= ");
+				scanf_s("%f", &cikar);
+			}
+			while (cikar > bakiye) //burada da bakiye kontrolü yapılır. bakiyeden daha az miktarda bir sayi ister.
+			{
+				printf("Bakiyeniz yeterli degildir. Lutfen daha dusuk bir tutar giriniz= ");
+				scanf_s("%f", &cikar);
+			}
+			bakiye -= cikar;
+			printf("\nPara cekme isleminiz basariyla tamamlanmistir.");
+			printf("\nYeni toplam bakiyeniz= %5.2fTL", bakiye);
+			printf("\nBaska islem yapmak istiyor musunuz? (e - h)");
+			goto YENIISLEM; break;
+		case'4':
+			printf("\n\nPara gondermek istediginiz kisinin hesap numarasi= "); //daha sonra görüntülenecek.
+			scanf_s("%d",&hesapno);
+			printf("Gondermek istediginiz tutar= ");
+			scanf_s("%f", &gonder);
+			while (gonder > bakiye) //göndermek istenilen tutar bakiyeden daha dusuk olana dek devam eder.
+			{
+				printf("Bakiyeniz yeterli degildir. Lutfen daha dusuk bir tutar giriniz= ");
+				scanf_s("%f", &gonder);
+			}
+			bakiye -= gonder;
+			printf("\n%d hesap numarali kisiye %5.2fTL gonderme isleminiz basariyla tamamlanmistir.",hesapno,gonder);
+			printf("\nYeni toplam bakiyeniz= %5.2fTL", bakiye);
+			printf("\nBaska islem yapmak istiyor musunuz? (e - h)");
+			goto YENIISLEM; break;
+		case'5':
+			CIKIS:
+			printf("\n\n--------------------------------------------------"
+				"\nBankamizi tercih ettiginiz icin tesekkur ederiz..."
+				"\n--------------------------------------------------\n\n"); exit(1); break; //çıkış kapısı buradadır.
+		default: //1,2,3,4,5 dışında bir tuşa basılması durumunda uyarır. menüyü tekrar ekrana getirir.
+			printf("\n\Lutfen yapmak istediginiz isleme gore 1 ile 5 arasinda bir tusa basiniz.");
+			goto MENU; break;
+	}
+
+	YENIISLEM: //başarılı işlemlerin sonucunda buraya yönlendirir.
+		x = _getch(); 
+
+		switch (x)
+		{
+		case'e':
+			goto MENU; break;
+		case'h':
+			goto CIKIS; break; //menüdeki 5.seçeneğe gider. kod fazlalığı yapmasın diye yönlendirdim.
+		default:
+			printf("\nYanlis giris yaptiniz.");
+			printf("\nMenuye donmek icin 'e', cikmak icin 'h' tusuna basiniz.");
+			goto YENIISLEM; break;
+		}
+}
