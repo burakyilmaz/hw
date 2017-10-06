@@ -1,3 +1,5 @@
+/* Jan 7, 2014 */
+
 #include<stdio.h>
 #include<stdlib.h> // atoi() fonksiyonu string i integer a dönüştürür. char ı integer yapmak için adresiyle yollanır
 
