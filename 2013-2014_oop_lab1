@@ -1,5 +1,6 @@
 /* A simple calculator does the arithmetical operation which user has entered.
  * Inputs have to be integers, else app crashes.
+ * Week 3 - 24.02.2013
  */
 
 package samplecalc;
