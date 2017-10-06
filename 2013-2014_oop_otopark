@@ -1,0 +1,81 @@
+#include<stdio.h>
+#include<stdlib.h> // atoi() fonksiyonu string i integer a dönüştürür. char ı integer yapmak için adresiyle yollanır
+
+int hesapla(struct park [],struct park []); //giriş ve çıkış saati parametre olarak yollanır
+
+struct park
+{
+	int sa;
+	int dk;
+};
+
+void main()
+{
+	FILE *dptr;
+	if((dptr=fopen("park.txt","r"))==NULL)
+		printf("Dosya acilamadi !\n\n");
+	else
+	{
+		struct park giris[4]; //dizi genişletilebilir. #define SATIRSAYISI x;[BUFSIZ]; malloc; aklıma gelen ilk yöntemler
+		struct park cikis[4];
+		int i;
+		char geciciGiris[4][10];
+		char geciciCikis[4][10];
+		char plaka[4][10]; //bu veriyi kullanılmayacak, dosyadan okurken fazla uğraşmamak için eklendi, silinebilir
+		char x;
+		for(i=0;!feof(dptr);i++) //dosyadaki veriler toplanıyor
+		{
+			fscanf(dptr,"%s",plaka[i]); //silersek fscanf ile tekrar okutmak zorundayız
+			fscanf(dptr,"%s",geciciGiris[i]);
+			fscanf(dptr,"%s",geciciCikis[i]);
+		}
+		for(i=0;i<4;i++)
+		{
+			x=geciciGiris[i][0];     //dosyadan alınan giriş saatinin ilk karakteri x e aktarılıyor
+			giris[i].sa=atoi(&x)*10; //char olan x, int e dönüşüyor ve 10 ile çarpılıyor (saatin onlar basamağı)
+			x=geciciGiris[i][1];
+			giris[i].sa=atoi(&x);    //saatin birler basamağı
+			x=geciciGiris[i][2];
+			giris[i].dk=atoi(&x)*10; //dakikanın onlar basamağı
+			x=geciciGiris[i][3];
+			giris[i].dk=atoi(&x);    //dakikanın birler basamağı
+
+			x=geciciCikis[i][0];     //aynı işlemler çıkış saati için uygulanıyor
+			cikis[i].sa=atoi(&x)*10;
+			x=geciciCikis[i][1];
+			cikis[i].sa=atoi(&x);
+			x=geciciCikis[i][2];
+			cikis[i].dk=atoi(&x)*10;
+			x=geciciCikis[i][3];
+			cikis[i].dk=atoi(&x);
+
+		}
+		printf("Gunluk Ciro= %d TL\n\n",hesapla(giris,cikis));
+		fclose(dptr);
+	}
+}
+
+int hesapla (struct park hgiris[4], struct park hcikis[4]) //parametre olarak gelen diziler kopyalanıyor
+{
+	int i;
+	int fark[4];
+	int ciro=0;
+
+	for(i=0;i<4;i++) //giriş çıkış saatleri çıkarma ve kontrol işlemlerinde kullanabileceğimiz dakikaya çevriliyor
+	{
+		fark[i]=(hcikis[i].sa*60+hcikis[i].dk)-(hgiris[i].sa*60+hgiris[i].dk); 
+	}
+
+	for(i=0;i<4;i++) //ciro hesaplanıyor
+	{
+		if(fark[i]<60)
+			ciro+=2;
+		else if(fark[i]<240)
+			ciro+=4;
+		else if(fark[i]<480)
+			ciro+=6;
+		else
+			ciro+=8;
+	}
+	return ciro;
+}
