@@ -1,3 +1,5 @@
+/* Oct 23, 2013 */
+
 #include<stdio.h> //printf ve scanf kullanmak icin.
 #include<conio.h> //getch() kullanmak icin.
 #include<iostream> //exit(1) kullanmak icin.
